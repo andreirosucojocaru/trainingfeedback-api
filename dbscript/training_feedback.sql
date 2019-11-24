@@ -24,15 +24,14 @@ create table `position`(
 insert into `position`(name)
   values('trainer');
 insert into `position`(name)
-  values('developer');
-insert into `position`(name)
-  values('tester');
+  values('trainee');
 
 create table `employee`(
   id                int(6) auto_increment not null primary key,
   first_name        varchar(50) not null,
   last_name         varchar(50) not null,
   employment_date   date not null,
+  email             varchar(50) not null,
   username          varchar(20) not null,
   password          varchar(100) not null,
   photo             longblob,
@@ -130,9 +129,9 @@ create table `frequency`(
 
 insert into `frequency`(name, description)
   values('daily', 'This training occurs every day between the start timestamp and finish timestamp.');
-insert into `cost_type`(name, description)
+insert into `frequency`(name, description)
   values('weekly', 'This training occurs once a week between the start timestamp and finish timestamp.');
-insert into `cost_type`(name, description)
+insert into `frequency`(name, description)
   values('monthly', 'This training occurs once a month between the start timestamp and finish timestamp.');
 
 create table `schedule`(
