@@ -13,6 +13,7 @@ import java.io.Serializable;
 public @Data class Role implements Serializable {
 
     public final static String ADMIN = "admin";
+    public final static String TRAINING_TEAM = "training_team";
     public final static String USER = "user";
 
     @Id

@@ -1,10 +1,10 @@
 package ro.andreirosucojocaru.trainingfeedback.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import ro.andreirosucojocaru.trainingfeedback.domain.Role;
+import ro.andreirosucojocaru.trainingfeedback.domain.Currency;
 
 import javax.transaction.Transactional;
 
 @Transactional
-public interface RoleRepository extends CrudRepository<Role, Long> {
+public interface CurrencyRepository extends CrudRepository<Currency, Long> {
 }

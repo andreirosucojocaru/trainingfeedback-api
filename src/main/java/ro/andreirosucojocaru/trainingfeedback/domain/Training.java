@@ -28,4 +28,17 @@ public @Data class Training implements Serializable {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @Column(nullable = false)
+    private Double price;
+
+    @ManyToOne
+    @JoinColumn(name = "currency_id")
+    private Currency currency;
+
+    @ManyToOne
+    @JoinColumn(name = "cost_type")
+    private CostType costType;
+
+
+
 }

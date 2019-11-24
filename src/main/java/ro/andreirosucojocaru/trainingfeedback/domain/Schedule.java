@@ -27,7 +27,14 @@ public @Data class Schedule implements Serializable {
     @JoinColumn(name = "room_id")
     private Room room;
 
+    @ManyToOne
+    @JoinColumn(name = "frequency_id")
+    private Frequency frequency;
+
+    @Column(nullable = false)
+    private Timestamp start;
+
     @Column
-    private Timestamp timeframe;
+    private Timestamp finish;
 
 }

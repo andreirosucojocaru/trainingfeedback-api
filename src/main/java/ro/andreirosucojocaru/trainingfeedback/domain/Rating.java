@@ -33,4 +33,7 @@ public @Data class Rating implements Serializable {
     @Column(nullable = false)
     private Integer grade;
 
+    @Column
+    private String remark;
+
 }

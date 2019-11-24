@@ -30,6 +30,9 @@ public @Data class Employee implements Serializable {
     private Date employmentDate;
 
     @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
     private String username;
 
     @Column(nullable = false)

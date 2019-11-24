@@ -1,8 +1,8 @@
-drop database trainingfeedback;
+drop database training_feedback;
 
-create database trainingfeedback;
+create database training_feedback;
 
-use trainingfeedback;
+use training_feedback;
 
 create table `role`(
   id                int(6) auto_increment not null primary key,
@@ -11,6 +11,8 @@ create table `role`(
 
 insert into `role`(name)
   values('admin');
+insert into `role`(name)
+  values('trainingteam');
 insert into `role`(name)
   values('user');
   
@@ -22,7 +24,9 @@ create table `position`(
 insert into `position`(name)
   values('trainer');
 insert into `position`(name)
-  values('trainee');
+  values('developer');
+insert into `position`(name)
+  values('tester');
 
 create table `employee`(
   id                int(6) auto_increment not null primary key,
@@ -43,35 +47,109 @@ create table `room`(
   id                int(6) auto_increment not null primary key,
   name              varchar(50) not null,
   location          varchar(50) not null,
-  capacity          int(4) not null
+  capacity          int(4) not null,
+  phone_number      varchar(10)
 );
+
+insert into `room`(name, location, capacity, phone_number)
+  values('Eminescu', '1st Floor', 20, '820');
+insert into `room`(name, location, capacity)
+  values('Brancusi', '1st Floor', 8);
+insert into `room`(name, location, capacity, phone_number)
+  values('Saligny', '2nd Floor', 15, '899');
+insert into `room`(name, location, capacity, phone_number)
+  values('Bacovia', '2nd Floor', 15, '877');
 
 create table `category`(
   id                int(6) auto_increment not null primary key,
   description       varchar(50) not null
 );
 
+insert into `category`(description)
+  values('Technical Course Development');
+insert into `category`(description)
+  values('Technical Course Technical Information');
+insert into `category`(description)
+  values('Soft Skills Course');
+insert into `category`(description)
+  values('Conference');
+insert into `category`(description)
+  values('Certification');
+insert into `category`(description)
+  values('Internal Training');
+insert into `category`(description)
+  values('Workshop');
+  
+create table `currency`(
+  id                int(6) auto_increment not null primary key,
+  code              varchar(3) not null,
+  name              varchar(20) not null,
+  symbol            varchar(1)
+);
+
+insert into `currency`(code, name)
+  values('RON', 'Romanian Leu');
+insert into `currency`(code, name, symbol)
+  values('EUR', 'Euro', '€');
+insert into `currency`(code, name, symbol)
+  values('USD', 'United States Dollar', '$');
+  
+create table `cost_type`(
+  id                int(6) auto_increment not null primary key,
+  name              varchar(20) not null,
+  description       varchar(100)
+);
+
+insert into `cost_type`(name, description)
+  values('per_employee', 'The cost applies for each employee that attends the training.');
+insert into `cost_type`(name, description)
+  values('per_class', 'The cost applies for the entire class and it is split among all employees that attend the training.');
+
 create table `training`(
   id                int(6) auto_increment not null primary key,
   name              varchar(50) not null,
   duration          int(4),
-  category_id       int(6) not null
+  category_id       int(6) not null,
+  price             numeric(6,2),
+  currency_id       int(6),
+  cost_type_id      int(6)
 );
 
 alter table `training`
   add constraint fk_training_category_id foreign key(category_id) references `category`(id) on delete cascade;
-  
-create table `schedule` (
+alter table `training`
+  add constraint fk_training_currency_id foreign key(currency_id) references `currency`(id) on delete cascade;
+alter table `training`
+  add constraint fk_training_cost_type_id foreign key(cost_type_id) references `cost_type`(id) on delete cascade;
+
+create table `frequency`(
+  id                 int(6) auto_increment not null primary key,
+  name               varchar(20) not null,
+  description        varchar(100)
+);
+
+insert into `frequency`(name, description)
+  values('daily', 'This training occurs every day between the start timestamp and finish timestamp.');
+insert into `cost_type`(name, description)
+  values('weekly', 'This training occurs once a week between the start timestamp and finish timestamp.');
+insert into `cost_type`(name, description)
+  values('monthly', 'This training occurs once a month between the start timestamp and finish timestamp.');
+
+create table `schedule`(
   id                 int(6) auto_increment not null primary key,
   training_id        int(6) not null,
   room_id            int(6) not null,
-  timeframe          timestamp
+  frequency_id       int(6) not null,
+  start              timestamp not null,
+  finish             timestamp
 );
 
 alter table `schedule`
   add constraint fk_schedule_training_id foreign key(training_id) references `training`(id) on delete cascade;
 alter table `schedule`
   add constraint fk_schedule_room_id foreign key(room_id) references `room`(id) on delete cascade;
+alter table `schedule`
+  add constraint fk_frequency_id foreign key(frequency_id) references `frequency`(id) on delete cascade;
   
 create table `participant` (
   id                 int(6) auto_increment not null primary key,
@@ -92,7 +170,8 @@ create table `rating` (
   schedule_id        int(6) not null,
   trainer_id         int(6) not null,
   trainee_id         int(6) not null,
-  grade              int(2) not null
+  grade              int(2) not null,
+  remark             varchar(1000)
 );
 
 alter table `rating`

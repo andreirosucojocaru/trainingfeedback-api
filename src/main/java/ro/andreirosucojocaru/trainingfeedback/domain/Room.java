@@ -25,4 +25,7 @@ public @Data class Room implements Serializable {
     @Column(nullable = false)
     private Integer capacity;
 
+    @Column
+    private String phoneNumber;
+
 }
